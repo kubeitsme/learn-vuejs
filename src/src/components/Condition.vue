@@ -11,7 +11,7 @@
       <button v-on:click="showHide">{{ buttonSeen }}</button>
     </div>
     <ol>
-      <li v-for="todo in todos">
+      <li v-for="todo in todos" :key="todo.id">
         {{ todo.text }}
       </li>
     </ol>
@@ -20,12 +20,28 @@
       <button v-on:click="addToList">Add to list</button>
       <button v-on:click="removeAll">Remove all</button>
     </div>
+    <div>
+      <h4>component</h4>
+      <ul v-if="todos.length">
+        <TodoListItem
+          v-for="todo in todos"
+          :key="todo.id"
+          :todo="todo"
+          @remove="removeTodo"
+        />
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
+import TodoListItem from './TodoListItem.vue'
+
 export default {
   name: 'Condition',
+  components: {
+    TodoListItem
+  },
   data () {
     return {
       header: 'Condition page',
@@ -35,9 +51,9 @@ export default {
       buttonSeen: 'Hide',
       item: '',
       todos: [
-        { text: 'Học JavaScript' },
-        { text: 'Học Vue' },
-        { text: 'Xây dựng cái gì đó hay ho' }
+        { id: 1, text: 'Học JavaScript' },
+        { id: 2, text: 'Học Vue' },
+        { id: 3, text: 'Xây dựng cái gì đó hay ho' }
       ]
     }
   },
@@ -55,6 +71,9 @@ export default {
     },
     removeAll: function(){
       this.todos = []
+    },
+    removeTodo: function(){
+      console.log('removeTodo')
     }
   }
 }
